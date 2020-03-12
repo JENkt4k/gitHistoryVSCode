@@ -13,7 +13,7 @@ jobs:
         submodules: recursive
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.x'
+        node-version: '12.8.x'
     - run: npm install
     - run: npm install -g vsce
     - name: vsce package
@@ -23,10 +23,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
         asset_path: ${{ format('githistory-{0}.vsix', github.event.release.tag_name) }}
         asset_name: ${{ format('githistory-{0}.vsix', github.event.release.tag_name) }}
         asset_content_type: application/zip
-    - name: vsce publish 
+    - name: vsce publish
       run: vsce publish -p "${{ secrets.VSCE_TOKEN }}"
-      
